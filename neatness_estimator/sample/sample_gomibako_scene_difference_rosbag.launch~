@@ -1,18 +1,17 @@
 <launch>
+  <arg name="filename" default="$(find neatness_estimator)/sample/gomibako2.bag" />
 
-  <!-- <arg name="filename" default="$(find neatness_estimator)/sample/gomibako.bag" /> -->
-  
   <arg name="options" value="--clock --loop" />
   <arg name="manager" value="camera_remote_nodelet_manager" />
   <arg name="respawn" value="false" />
 
-  <!-- <param name="/use_sim_time" value="true" /> -->
+  <param name="/use_sim_time" value="true" />
 
-  <!-- play rosbag -->
-  <!-- <node name="rosbag_play" -->
-  <!--       pkg="rosbag" type="play" -->
-  <!--       output="log" -->
-  <!--       args="$(arg filename) $(arg options)" /> -->
+  play rosbag
+  <node name="rosbag_play"
+        pkg="rosbag" type="play"
+        output="log"
+        args="$(arg filename) $(arg options)" />
 
   <node name="$(arg manager)"
         pkg="nodelet" type="nodelet" 
@@ -145,25 +144,17 @@
       queue_size: 100
     </rosparam>
   </node>
-  
-  <!-- </group> -->
 
-  <!-- <node name="rviz" -->
-  <!--       pkg="rviz" type="rviz" -->
-  <!--       args="-d $(find neatness_estimator)/sample/gomibako.rviz"> -->
-  <!-- </node> -->
-
+  <node name="rviz"
+        pkg="rviz" type="rviz"
+        args="-d $(find neatness_estimator)/sample/gomibako.rviz">
+  </node>
   <!-- distance estimator -->
   <include file="$(find neatness_estimator)/launch/distance_estimator_module_color_and_geometry.launch" >
     <arg name="prefix" value="$(env HOME)/.ros/gomibako" />
     <arg name="cloud_topic" value="/remote/tablet/head_rgbd_sensor/depth_registered/points" />
     <arg name="image_topic" value="/remote/tablet/head_rgbd_sensor/rgb/image_rect_color" />
-    <arg name="cluster_topic" value="/point_indices_to_cluster_point_indices/output" />
+    <arg name="cluster_topic" value="clustering/output" />
   </include>
-
-  <!-- <node name="sequence_difference_estimation_client" -->
-  <!--       pkg="neatness_estimator" type="sequence_difference_estimation_client.py" -->
-  <!--       output="screen"> -->
-  <!-- </node> -->
 
 </launch>
